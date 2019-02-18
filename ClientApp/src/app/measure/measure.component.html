@@ -1,0 +1,13 @@
+<button mat-mini-fab class="measure-number" (click)="onPlayClick();">{{measureNumber}}</button>
+<div *ngIf="!editing" class="time-signature"><span clas="input-measure">{{top}}</span> / <span class="input-measure">{{bottom}}</span></div>
+<div *ngIf="editing" class="time-signature"><input type="number" class="input-measure" [(ngModel)]="top"/> / <input class="input-measure" type="number" [(ngModel)]="bottom"/></div>
+<button mat-raised-button color="primary" class="edit-button" (click)="edit()">
+  <span *ngIf="!editing">Edit</span>
+  <span *ngIf="editing">Save</span>
+</button>
+<button mat-raised-button color="primary" class="play-button" (click)="onPlayClick();">Play
+</button>
+
+
+
+

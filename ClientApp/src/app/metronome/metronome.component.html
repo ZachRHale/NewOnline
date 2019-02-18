@@ -1,0 +1,50 @@
+<div style="text-align:center;">
+  <div class="example-container">
+    <h1> {{title}} </h1>
+  </div>
+  <div class="example-container buttons">
+    <span>
+      <button mat-raised-button color="primary" class="play-button" (click)="printScore();">Print Score
+      </button>
+      <button mat-raised-button color="secondary" class="play-button" [disabled]="playing" (click)="playAll(0);">Play First Bar
+      </button>
+    </span>
+  </div>
+
+  <div class="example-container">
+    <h2>Options</h2>
+
+    <div
+      cdkDropList
+      #options="cdkDropList"
+      [cdkDropListData]="measureOptions"
+      [cdkDropListConnectedTo]="[score]"
+      class="example-list"
+      (cdkDropListExited)="drag($event)"
+      (cdkDropListDropped)="drop($event)">
+      <div class="example-box" *ngFor="let item of measureOptions; let i = index;" cdkDrag>
+        <app-measure top="{{item.top}}" bottom="{{item.bottom}}" [measureNumber]="i + 1" (measureUpdated)="updateOptions($event, item)"></app-measure>
+      </div>
+    </div>
+  </div>
+
+  <div class="example-container">
+    <h2>Score</h2>
+
+    <div
+      cdkDropList
+      #score="cdkDropList"
+      [cdkDropListData]="currentScore"
+      [cdkDropListConnectedTo]="[options]"
+      class="example-list"
+      (cdkDropListDropped)="drop($event)">
+      <div class="example-box" *ngFor="let item of currentScore; let i = index;" cdkDrag>
+          <app-measure top="{{item.top}}" bottom="{{item.bottom}}" [measureNumber]="i + 1" (giveReference)="item.componentReference = $event;" (measureUpdated)="updateScore($event, item)"></app-measure>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
