@@ -5,6 +5,7 @@ export class Measure {
     public bottom: number
     public tempo: number
     public beats: Array<number>
+    public score: string
     public componentReference: MeasureComponent
 
     constructor(top: number, bottom: number, tempo: number = 80, beats: Array<number> = []) {

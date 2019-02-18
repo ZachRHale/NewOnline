@@ -12,6 +12,8 @@ namespace NewOnline.Models
         public DbSet<User> User { get; set; }
         public DbSet<Composer> Composer { get; set; }
 
+        public DbSet<Measure> Measure { get; set; }
+
         public MetronomeContext() {
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -3,7 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CdkDragDrop, moveItemInArray, copyArrayItem } from '@angular/cdk/drag-drop';
 import { Measure } from '../models/measure.model';
-import { ScoreService } from '../score.service';
+import { ScoreService } from '../services/score.service';
+import { MeasureService } from '../services/measure.service';
 
 @Component({
 	selector: 'app-metronome',
@@ -25,9 +26,10 @@ export class MetronomeComponent implements OnInit {
 	private id: string;
 	public playing: boolean = false;
 	public title: string;
+	public composer: string
 
 
-	constructor(private activeRoute: ActivatedRoute, private scoreService: ScoreService) {}
+	constructor(private activeRoute: ActivatedRoute, private scoreService: ScoreService, private measureService: MeasureService) {}
 
 	ngOnInit() {
 		this.subscription = this.activeRoute.params.subscribe((params) => {
@@ -35,8 +37,15 @@ export class MetronomeComponent implements OnInit {
 		});
 
 		this.scoreService.getScore(this.id).subscribe((score) => {
+			console.log(score)
 			this.id = score.id;
 			this.title = score.title;
+			this.composer = score.composer;
+		})
+
+		this.measureService.getMeasures(this.id).subscribe((measures) => {
+			console.log(measures)
+			this.currentScore = measures;
 		})
 	}
 

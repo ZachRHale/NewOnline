@@ -9,10 +9,7 @@ namespace NewOnline.Models {
             public Guid creator { get; set; }
             public DateTime create_date { get; set; }
 
-            public Score(Guid id, string title) {
-                this.id = id;
-                this.title = title;
-            }
+            public Score() {}
 
         }
 }
