@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NewOnline.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace NewOnline
 {
@@ -31,7 +33,12 @@ namespace NewOnline
 
             services.AddEntityFrameworkNpgsql()
                .AddDbContext<MetronomeContext>()
-               .BuildServiceProvider();
+               .AddDbContext<IdentityContext>();
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<IdentityContext>()
+                .AddDefaultTokenProviders();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,6 +65,9 @@ namespace NewOnline
                     name: "default",
                     template: "{controller}/{action=Index}/{id?}");
             });
+
+            app.UseAuthentication();
+
 
             app.UseSpa(spa =>
             {
