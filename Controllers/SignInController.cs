@@ -14,41 +14,37 @@ using System.IdentityModel.Tokens.Jwt;
 namespace NewOnline.Controllers
 {
     [Route("api/[controller]")]
-    public class RegisterController : Controller
+    public class SignInController : Controller
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+
         private readonly IConfiguration _configuration;
 
-        public RegisterController(
+        public SignInController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IConfiguration configuration
             )
         {
-            _userManager = userManager;
             _signInManager = signInManager;
             _configuration = configuration;
+            _userManager = userManager;
         }
 
 
         [HttpPost]
-        public async Task<object> Register([FromBody] RegiserUser model)
+        public async Task<IActionResult> SignIn([FromBody] SignInUser model)
         {
-            var user = new ApplicationUser
+            var user = await _userManager.FindByNameAsync(model.UserName);
+            var password = await _userManager.CheckPasswordAsync(user, model.Password);
+            
+            if (password)
             {
-                UserName = model.UserName, 
-                Email = model.Email
-            };
-            var result = await _userManager.CreateAsync(user, model.Password);
-
-            if (result.Succeeded)
-            {
-                await _signInManager.SignInAsync(user, false);
+                await _signInManager.SignInAsync(user, false, "jwt");
                 var token = await GenerateJwtToken(model.UserName, user);
-                return token; 
-            } else {
-                return result.Errors;
+                var result = new { token = token };
+                return Ok(result); 
             }
             
             throw new ApplicationException("UNKNOWN_ERROR");
