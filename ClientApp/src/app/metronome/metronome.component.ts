@@ -117,5 +117,15 @@ export class MetronomeComponent implements OnInit {
 				event.currentIndex
 			);
 		}
+
+		this.currentScore.forEach(measure => {
+			measure.score = this.id;
+		});
+
+		console.log(this.currentScore)
+
+		this.measureService.saveMeasures(this.currentScore).subscribe(result => {
+			//this.currentScore = result;
+		})
 	}
 }

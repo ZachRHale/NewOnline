@@ -16,8 +16,14 @@ namespace NewOnline.Controllers
         {
             using (var context = new MetronomeContext()) {
                 
-                var score = context.Score.Where(s => s.id.ToString() == id).First();
-                return Json(score);
+                var scoreCollection = context.Score.Where(s => s.id.ToString() == id);
+                var score = scoreCollection.Count() != 0 ? scoreCollection.First() : null;
+
+                if (score != null) {
+                    return Json(score);
+                } else {
+                    return Json(new { error = "Nothing is here" });
+                }
 
             }
 
@@ -28,16 +34,26 @@ namespace NewOnline.Controllers
             using (var context = new MetronomeContext())
             {
 
-                var id = new Guid();
+                Boolean isUpdate = input.id == null;
+
                 var score = new Score();
 
-                score.id = id;
+
+                if (!isUpdate) {
+                    Guid id = new Guid();
+                    score.id = id;
+                    score.create_date = DateTime.Now;
+                }
+
                 score.creator = input.creator;
                 score.composer = input.composer;
-                score.create_date = DateTime.Now;
                 score.title = input.title;
                 
-                context.Score.Add(score);
+                if (isUpdate) {
+                    context.Score.Update(score);
+                } else {
+                    context.Score.Add(score);
+                }
                 context.SaveChanges();
                 return Ok("Score Created");
             }

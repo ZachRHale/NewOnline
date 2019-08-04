@@ -23,18 +23,20 @@ namespace NewOnline.Controllers
 
         }
 
-        [HttpPost]
-        public IActionResult SaveMeasures([FromBody] List<Measure> input) {
-            using (var context = new MetronomeContext())
-            {
 
-                foreach(Measure measure in input) {
-                    measure.id = new Guid();
-                }
+        [HttpPost]
+        public IActionResult UpdateMeasures([FromBody] List<Measure> measures) {
+            using (var context = new MetronomeContext())
+            {           
+                foreach(Measure measure in measures) {
+                    if (measure.id == null) {
+                        measure.id = new Guid();
+                    }
+                }    
                 
-                context.Measure.AddRange(input);
+                context.Measure.UpdateRange(measures);
                 context.SaveChanges();
-                return Ok(input);
+                return Ok(measures);
             }
         }
 

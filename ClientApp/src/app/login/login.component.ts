@@ -18,10 +18,9 @@ export class LoginComponent implements OnInit {
   }
 
   public login() {
-    console.log("log!!")
     const user = { UserName: this.userName, Password: this.password, Email: this.email };
-    this.loginService.login(user).subscribe((key: string) => {
-      console.log(key);
+    this.loginService.login(user).subscribe((key: { auth: string }) => {
+      localStorage.setItem('authKey', JSON.stringify(key));
     })
   }
 

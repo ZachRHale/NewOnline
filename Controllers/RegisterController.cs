@@ -45,16 +45,16 @@ namespace NewOnline.Controllers
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, false);
-                var token = await GenerateJwtToken(model.UserName, user);
+                var token = GenerateJwtToken(model.UserName, user);
                 return token; 
-            } else {
+            } else { 
                 return result.Errors;
             }
             
             throw new ApplicationException("UNKNOWN_ERROR");
         }
 
-        private async Task<object> GenerateJwtToken(string email, ApplicationUser user)
+        private string GenerateJwtToken(string email, ApplicationUser user)
         {
             var claims = new List<Claim>
             {
@@ -75,7 +75,7 @@ namespace NewOnline.Controllers
                 signingCredentials: creds
             );
 
-            return  new JwtSecurityTokenHandler().WriteToken(token);
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

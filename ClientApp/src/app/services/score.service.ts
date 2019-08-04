@@ -15,4 +15,8 @@ export class ScoreService {
   getScore(id: string): Observable<Score> {
     return this.http.get(environment.apiUrl + '/score/' + id) as Observable<Score>;
   }
+
+  updateScore(newScore: Score): Observable<any> {
+    return this.http.post(environment.apiUrl + '/score', newScore);
+  }
 }

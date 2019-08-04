@@ -9,6 +9,7 @@ namespace NewOnline.Models {
             public int bottom { get; set; }
             public double tempo { get; set; }
             public string beats { get; set; }
+            public int measureNumber { get; set; }
 
         }
 }

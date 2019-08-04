@@ -8,28 +8,26 @@ import { Measure } from '../models/measure.model';
 	styleUrls: [ './measure.component.css' ]
 })
 export class MeasureComponent implements OnInit {
-
-
-  @Input() public top: string;
-  @Input() public bottom: string;
+	@Input() public top: string;
+	@Input() public bottom: string;
 	@Input() public tempo: number = 100;
 	@Input() public measureNumber: number;
 	@Output() public measureUpdated: EventEmitter<Measure>;
-	@Output() public giveReference:EventEmitter<MeasureComponent>;
+	@Output() public giveReference: EventEmitter<MeasureComponent>;
 
-  public beats: Array<number> = [];
-  public editing: boolean = false;
+	public beats: Array<number> = [];
+	public editing: boolean = false;
 
-  constructor() {
+	constructor() {
 		this.measureUpdated = new EventEmitter();
 		this.giveReference = new EventEmitter();
-  }
-  
-  ngOnInit() {
-		this.setBeats()
+	}
+
+	ngOnInit() {
+		this.setBeats();
 		this.giveReference.emit(this);
 	}
-	
+
 	setBeats() {
 		this.beats = [];
 		for (var _i = 1; _i < parseInt(this.top) + 1; _i++) {
@@ -37,21 +35,20 @@ export class MeasureComponent implements OnInit {
 		}
 	}
 
-  edit() {
-    this.editing = !this.editing;
+	edit() {
+		this.editing = !this.editing;
 		this.setBeats();
 
-    if (!this.editing) {
-      const measure = new Measure(parseInt(this.top), parseInt(this.bottom), this.tempo, this.beats);
-      this.measureUpdated.emit(measure);
-    }
-
+		if (!this.editing) {
+			const measure = new Measure(parseInt(this.top), parseInt(this.bottom), this.tempo, this.beats);
+			this.measureUpdated.emit(measure);
+		}
 	}
-	
+
 	onPlayClick() {
 		this.play(0).then((stuff) => {
-			console.log(stuff)
-		})
+			console.log(stuff);
+		});
 	}
 
 	play(input: number): Promise<number> {
