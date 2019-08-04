@@ -37,14 +37,12 @@ export class MetronomeComponent implements OnInit {
 		});
 
 		this.scoreService.getScore(this.id).subscribe((score) => {
-			console.log(score)
 			this.id = score.id;
 			this.title = score.title;
 			this.composer = score.composer;
 		})
 
 		this.measureService.getMeasures(this.id).subscribe((measures) => {
-			console.log(measures)
 			this.currentScore = measures;
 		})
 	}
@@ -64,13 +62,16 @@ export class MetronomeComponent implements OnInit {
 		})
 	}
 
-	updateScore(newItem, oldItem) {
+	updateScore(newItem: Measure, oldItem: Measure) {
 		this.currentScore.forEach((item) => {
 			if (item === oldItem) {
 				item.top = newItem.top;
 				item.bottom = newItem.bottom;
 				item.tempo = newItem.tempo;
 				item.beats = newItem.beats;
+				this.measureService.saveSingleMeasure(item).subscribe((measure: Measure) => {
+					console.log('saved');
+				})
 			}
 		})
 	}
@@ -118,8 +119,9 @@ export class MetronomeComponent implements OnInit {
 			);
 		}
 
-		this.currentScore.forEach(measure => {
+		this.currentScore.forEach((measure, index) => {
 			measure.score = this.id;
+			measure.measureNumber = index + 1;
 		});
 
 		console.log(this.currentScore)

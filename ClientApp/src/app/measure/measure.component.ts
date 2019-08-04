@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { Measure } from '../models/measure.model';
+import { MeasureService } from '../services/measure.service';
 
 @Component({
 	selector: 'app-measure',

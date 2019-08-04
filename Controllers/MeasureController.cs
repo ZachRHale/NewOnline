@@ -16,11 +16,21 @@ namespace NewOnline.Controllers
         {
             using (var context = new MetronomeContext()) {
                 
-                var measures = context.Measure.Where(s => s.score.ToString() == score).ToList();
+                var measures = context.Measure.Where(s => s.score.ToString() == score).ToList().OrderBy(measure => measure.measureNumber);
                 return Json(measures);
 
             }
 
+        }
+
+        [HttpPost("single")]
+        public IActionResult UpdateMeasure([FromBody] Measure measure) {
+            using (var context = new MetronomeContext())
+            {                        
+                context.Measure.Update(measure);
+                context.SaveChanges();
+                return Ok(measure);
+            }
         }
 
 

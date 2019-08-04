@@ -25,7 +25,7 @@ export function returnMeasureDBFromMeasure(measures: Measure[]): MeasureDatabase
         const newObj: MeasureDatabaseModel = {
             id: measure.id,
             score: measure.score,
-            beats: JSON.stringify(measure.beats), 
+            beats: '', 
             top: measure.top,
             bottom: measure.bottom,
             tempo: measure.tempo,
@@ -36,6 +36,21 @@ export function returnMeasureDBFromMeasure(measures: Measure[]): MeasureDatabase
     });
 
     return newArray;
+}
+
+export function singleMeasureToModel(measure: Measure): MeasureDatabaseModel{
+    
+    const newObj: MeasureDatabaseModel = {
+        id: measure.id,
+        score: measure.score,
+        beats: '', 
+        top: measure.top,
+        bottom: measure.bottom,
+        tempo: measure.tempo,
+        measureNumber: measure.measureNumber
+    }
+
+    return newObj;
 }
 
 export interface MeasureDatabaseModel {
