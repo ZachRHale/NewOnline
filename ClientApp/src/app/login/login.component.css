@@ -1,3 +1,12 @@
 .login-page {
     text-align: center;
 }
+
+.login-register {
+    display:flex;
+    align-content: space-between;
+}
+
+.section {
+    width: 50%;
+}

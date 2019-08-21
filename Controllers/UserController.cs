@@ -1,25 +1,24 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using NewOnline.Models;
+using Microsoft.AspNetCore.Identity;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Threading.Tasks;
+
 
 namespace NewOnline.Controllers
 {
     [Route("api/[controller]")]
     public class UserController : Controller
     {
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        // [HttpGet("{id}")]
-        // public IActionResult GetUsersByFirstName(string first_name)
-        // {
-        //     using (var context = new MetronomeContext()) {
-        //         List<User> result = context.User.Where(u => u.first_name == first_name).ToList();
-        //         return Ok(result);
-        //     }
-            
-        // }
+        public UserController(UserManager<ApplicationUser> userManager)
+        {
+            _userManager = userManager;
+        }
 
         [HttpGet]
         public IActionResult GetUserByHandle(User input) {
@@ -31,6 +30,21 @@ namespace NewOnline.Controllers
                     Response.StatusCode = 500;
                     return Ok("No handles found");
                 }
+            }
+        }
+
+        [HttpPost("byJWT")]
+        public async Task<IActionResult> GetUserByJWT([FromBody] string jwt) {
+
+            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();  
+            JwtSecurityToken jwtToken = (JwtSecurityToken) tokenHandler.ReadToken(jwt);  
+            
+            var user = await _userManager.FindByIdAsync(jwtToken.Id);
+
+            if (user != null) {
+                return Ok(user);
+            } else {
+                return Ok(new { errors = "No User Found"});
             }
         }
 

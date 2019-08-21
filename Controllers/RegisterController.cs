@@ -33,7 +33,7 @@ namespace NewOnline.Controllers
 
 
         [HttpPost]
-        public async Task<object> Register([FromBody] RegiserUser model)
+        public async Task<IActionResult> Register([FromBody] RegiserUser model)
         {
             var user = new ApplicationUser
             {
@@ -46,12 +46,13 @@ namespace NewOnline.Controllers
             {
                 await _signInManager.SignInAsync(user, false);
                 var token = GenerateJwtToken(model.UserName, user);
-                return token; 
+                var resultObject = new { token = token };
+                return Ok(resultObject); 
             } else { 
-                return result.Errors;
+                var errors = new {errors =  result.Errors.ToArray()};
+                return Ok(errors);
             }
             
-            throw new ApplicationException("UNKNOWN_ERROR");
         }
 
         private string GenerateJwtToken(string email, ApplicationUser user)

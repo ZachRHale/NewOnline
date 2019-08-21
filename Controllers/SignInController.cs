@@ -37,20 +37,23 @@ namespace NewOnline.Controllers
         public async Task<IActionResult> SignIn([FromBody] SignInUser model)
         {
             var user = await _userManager.FindByNameAsync(model.UserName);
-            var password = await _userManager.CheckPasswordAsync(user, model.Password);
+            var authorized = await _userManager.CheckPasswordAsync(user, model.Password);
             
-            if (password)
+            if (authorized)
             {
                 await _signInManager.SignInAsync(user, false, "jwt");
-                var token = await GenerateJwtToken(model.UserName, user);
+                var token = GenerateJwtToken(model.UserName, user);
                 var result = new { token = token };
                 return Ok(result); 
+            } else {
+                var errors = new List<string>();
+                errors.Add("Incorrect Password");
+                return Ok(new { errors = errors });
             }
             
-            throw new ApplicationException("UNKNOWN_ERROR");
         }
 
-        private async Task<object> GenerateJwtToken(string email, ApplicationUser user)
+        private string GenerateJwtToken(string email, ApplicationUser user)
         {
             var claims = new List<Claim>
             {
@@ -71,7 +74,8 @@ namespace NewOnline.Controllers
                 signingCredentials: creds
             );
 
-            return  new JwtSecurityTokenHandler().WriteToken(token);
+            return new JwtSecurityTokenHandler().WriteToken(token);
+
         }
     }
 }
