@@ -4,9 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using NewOnline.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace NewOnline.Controllers
 {
+
+    [Authorize]
     [Route("api/[controller]")]
     public class MeasureController : Controller
     {

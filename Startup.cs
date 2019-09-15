@@ -10,9 +10,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication;
+
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System;
+using Microsoft.AspNetCore.Authorization;
 
 namespace NewOnline
 {
@@ -28,8 +31,6 @@ namespace NewOnline
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -60,6 +61,7 @@ namespace NewOnline
                     cfg.SaveToken = true;
                     cfg.TokenValidationParameters = new TokenValidationParameters
                     {
+
                         ValidIssuer = Configuration["JwtIssuer"],
                         ValidAudience = Configuration["JwtIssuer"],
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtKey"])),
@@ -67,7 +69,10 @@ namespace NewOnline
                     };
                 });
 
+                services.AddAuthorization();
+                services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+                // services.AddScoped<IsGood>();
 
         }
 
@@ -86,6 +91,8 @@ namespace NewOnline
             }
 
             app.UseHttpsRedirection();
+            app.UseAuthentication();
+
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
@@ -95,8 +102,6 @@ namespace NewOnline
                     name: "default",
                     template: "{controller}/{action=Index}/{id?}");
             });
-
-            app.UseAuthentication();
 
 
             app.UseSpa(spa =>
