@@ -1,9 +1,9 @@
 export class Score {
-    public id?: string
+    public id: string
     public title: string
     public composer: string
     public creator: string
-    public createDate: Date
+    public create_date: Date
 
     constructor(title: string, id?: string) {
         this.id = id;

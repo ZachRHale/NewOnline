@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using NewOnline.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+
 
 namespace NewOnline.Controllers
 {        
@@ -12,6 +14,16 @@ namespace NewOnline.Controllers
     [Route("api/[controller]")]
     public class ScoreController : Controller
     {
+
+        [HttpGet("byUser")]
+        public IActionResult GetScoresByUser(){
+            using (var context = new MetronomeContext()) {
+                var nameId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var scoreCollection = context.Score.Where(s => s.creator.ToString() == nameId);
+                return Json(scoreCollection.ToList());
+            }
+        }
+
         [HttpGet("{id}")]
         public IActionResult GetScore(string id)
         {
@@ -46,7 +58,7 @@ namespace NewOnline.Controllers
                     score.create_date = DateTime.Now;
                 }
 
-                score.creator = input.creator;
+                score.creator = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 score.composer = input.composer;
                 score.title = input.title;
                 

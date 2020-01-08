@@ -12,10 +12,13 @@ namespace NewOnline.Controllers
     {
 
         [HttpGet]
-        public IActionResult GetComposers(Composer input)
+        public IActionResult GetComposers()
         {
-            
-            return Ok("Hey");
+            using (var context = new MetronomeContext())
+            {
+                var composers = context.Composer.Select(s => s).ToList();
+                return Ok(composers);
+            }
         }
 
         [HttpPost]

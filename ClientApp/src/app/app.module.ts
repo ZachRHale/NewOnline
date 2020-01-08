@@ -15,6 +15,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { LoginComponent } from './login/login.component';
 import {MatInputModule} from '@angular/material/input';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
+
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JwtInterceptService } from './helpers/jwt-intercept.service';
 import { NewMetronomeComponent } from './new-metronome/new-metronome.component';
@@ -34,6 +38,9 @@ import { NewMetronomeComponent } from './new-metronome/new-metronome.component';
     LoginComponent,
     NewMetronomeComponent
   ],
+  entryComponents: [
+    NewMetronomeComponent
+  ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     BrowserAnimationsModule,
@@ -42,7 +49,9 @@ import { NewMetronomeComponent } from './new-metronome/new-metronome.component';
     DragDropModule,
     MatButtonModule,
     MatIconModule,
+    MatDialogModule,
     MatInputModule,
+    MatSelectModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'myMetronomes', component: MyMetronomesComponent, pathMatch: 'full'},
