@@ -11,8 +11,9 @@ export class MyMetronomesComponent implements OnInit {
   constructor(private score: ScoreService) { }
 
   ngOnInit() {
-
     this.score.getScoresByUser();
   }
+
+  
 
 }
