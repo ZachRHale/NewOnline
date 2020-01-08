@@ -17,6 +17,7 @@ import { LoginComponent } from './login/login.component';
 import {MatInputModule} from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JwtInterceptService } from './helpers/jwt-intercept.service';
+import { NewMetronomeComponent } from './new-metronome/new-metronome.component';
 
 
 
@@ -30,7 +31,8 @@ import { JwtInterceptService } from './helpers/jwt-intercept.service';
     MyMetronomesComponent,
     MetronomeComponent,
     MeasureComponent,
-    LoginComponent
+    LoginComponent,
+    NewMetronomeComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

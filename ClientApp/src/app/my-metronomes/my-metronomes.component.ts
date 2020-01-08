@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ScoreService } from '../services/score.service';
 
 @Component({
   selector: 'app-my-metronomes',
@@ -7,9 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MyMetronomesComponent implements OnInit {
 
-  constructor() { }
+  constructor(private score: ScoreService) { }
 
   ngOnInit() {
+
+    this.score.getScoresByUser();
   }
 
 }

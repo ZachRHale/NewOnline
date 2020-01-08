@@ -40,7 +40,13 @@
       class="example-list"
       (cdkDropListDropped)="drop($event)">
       <div class="example-box" *ngFor="let item of currentScore; let i = index;" cdkDrag>
-          <app-measure top="{{item.top}}" bottom="{{item.bottom}}" [measureNumber]="i + 1" (giveReference)="item.componentReference = $event;" (measureUpdated)="updateScore($event, item)"></app-measure>
+        <app-measure 
+          top="{{item.top}}" 
+          bottom="{{item.bottom}}" 
+          [measureNumber]="i + 1" 
+          (giveReference)="item.componentReference = $event;" 
+          (measureUpdated)="updateScore($event, item)">
+        </app-measure>
       </div>
     </div>
   </div>

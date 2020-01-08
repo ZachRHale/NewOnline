@@ -20,4 +20,10 @@ export class ScoreService {
   updateScore(newScore: Score): Observable<any> {
     return this.http.post(environment.apiUrl + '/score', newScore);
   }
+
+  getScoresByUser() {
+    this.http.get(environment.apiUrl + '/score/byUser').subscribe(result => {
+      console.log(result);
+    })
+  }
 }
