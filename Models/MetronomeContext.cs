@@ -18,7 +18,7 @@ namespace NewOnline.Models
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Host=localhost;Database=OnlineMetronome;Username=postgres;Password=08071998");
+            optionsBuilder.UseNpgsql("");
         }          
 
         protected override void OnModelCreating(ModelBuilder builder) {
