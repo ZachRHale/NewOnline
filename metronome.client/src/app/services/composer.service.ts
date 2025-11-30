@@ -2,12 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Composer } from '../models/composer';
 import { Observable } from 'rxjs';
+import { environment } from '../environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ComposerService {
-  private url: string = "https://localhost:7270";
+  private url: string = environment.apiUrl;
   constructor(private http: HttpClient) {}
 
   getComposers() {
