@@ -1,4 +1,6 @@
 
+using Microsoft.EntityFrameworkCore;
+
 namespace Metronome.Server
 {
     public class Program
@@ -13,11 +15,20 @@ namespace Metronome.Server
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddDbContext<MetronomeContext>(options =>
+                options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
             var app = builder.Build();
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
+            app.UseCors(options =>
+            {
+                options.AllowAnyHeader();
+                options.AllowAnyMethod();
+                options.AllowAnyOrigin();
+            });
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
