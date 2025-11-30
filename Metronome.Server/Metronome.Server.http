@@ -1,0 +1,6 @@
+@Metronome.Server_HostAddress = http://localhost:5119
+
+GET {{Metronome.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
