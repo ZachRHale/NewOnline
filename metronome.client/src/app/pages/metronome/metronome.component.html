@@ -1,14 +1,30 @@
 @if (score) {
-<h2>{{ score?.title }}</h2>
-}
-@for (item of measures; track item.number) {
-<app-measure
-  [top]="item.top"
-  [bottom]="item.bottom"
-  [tempo]="item.tempo"
-  [measureNumber]="item.number ?? 0"
-  (playCompleted)="onPlayCompleted(item.number ?? 1)"></app-measure>
-} @empty {
-<li>There are no items.</li>
+  <h2>{{ score?.title }}</h2>
+  <mat-slider min="40" max="240" step="1">
+    <input matSliderThumb value="100" [(ngModel)]="tempo" />
+  </mat-slider>
+  <span>{{ tempo }} BPM</span>
 }
 
+<div
+  cdkDropList
+  cdkDropListOrientation="horizontal"
+  (cdkDropListDropped)="drop($event)"
+  class="measure-list"
+>
+  @for (item of measures; track item.number) {
+    <app-measure
+      class="measure"
+      cdkDragHandle
+      cdkDrag
+      [top]="item.top"
+      [bottom]="item.bottom"
+      [tempo]="tempo"
+      [showTimeSignature]="showTimeSignature(item)"
+      [measureNumber]="item.number ?? 0"
+      (playCompleted)="onPlayCompleted(item.number ?? 1)"
+    ></app-measure>
+  } @empty {
+    <li>There are no items.</li>
+  }
+</div>

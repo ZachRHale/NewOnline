@@ -1,33 +1,69 @@
 .input-measure {
-    width:30%;
-    text-align:center;
+  width: 30%;
+  text-align: center;
+  font-size: 22px;
+}
+
+.edit-input-measure {
+  width: 50%;
+  text-align: center;
+  font-size: 22px;
 }
 
 .measure-number {
-    float:left;
+  position: absolute;
+  bottom: 0px;
+  right: 8px;
+  font-size: 1em;
+  color: #888;
+}
+
+.measure-number {
+  float: left;
+}
+
+.beat {
+  width: 20px;
+  height: 20px;
+  margin: 2px;
+  display: inline-block;
+  border-radius: 100px;
+  border: 1px solid #333;
+}
+
+.beat.active {
+  background-color: #333;
 }
 
 .time-signature {
-    display:block;
-    float: left;
-    padding: 6px 30px;
-    width: 190px;
+  display: block;
+  float: left;
+  /* padding: 6px 30px; */
+  font-size: 22px;
+  width: 90px;
+}
+
+.time-signature.editing {
+  display: contents;
+  align-items: center;
 }
 
 .edit-button {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
 .play-button {
 }
 
 .measure {
-    border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 5px;
-    display: inline-block;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  display: inline-block;
+  position: relative;
+  min-height: 72px;
 }
 
 .playing {
-    background-color: #a5b9e9;
+  background-color: #a5b9e9;
 }
