@@ -41,7 +41,7 @@ jobs:
         username: ${{ secrets.DO_USER }}
         key: ${{ secrets.DO_SSH_KEY }}
         script: |
-          cd ~/metronome-api
+          cd ~/metronome-api/publish
           # Stop any running instance (customize as needed)
           pkill dotnet || true
           # Start the API (customize as needed)
