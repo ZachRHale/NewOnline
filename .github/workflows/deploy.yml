@@ -45,4 +45,4 @@ jobs:
           # Stop any running instance (customize as needed)
           pkill dotnet || true
           # Start the API (customize as needed)
-          nohup dotnet Metronome.Server.dll > log.txt 2>&1 &
+          nohup dotnet Metronome.Server.dll --urls "http:/0.0.0.0:5000" > log.txt 2>&1 &
