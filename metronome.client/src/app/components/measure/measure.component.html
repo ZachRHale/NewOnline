@@ -1,9 +1,9 @@
 <div [ngClass]="{ playing: isPlaying, measure: true }">
   @if (showTimeSignature) {
     <div *ngIf="!editing" class="time-signature">
-      <div class="input-measure">{{ top }}</div>
+      <div class="input-measure">{{ measure.top }}</div>
       <div class="divider"></div>
-      <div class="input-measure">{{ bottom }}</div>
+      <div class="input-measure">{{ measure.bottom }}</div>
     </div>
   }
   <div *ngIf="editing" class="time-signature">
@@ -11,14 +11,14 @@
       matInput
       type="number"
       class="edit-input-measure"
-      [(ngModel)]="top"
+      [(ngModel)]="measure.top"
     />
     <div class="divider"></div>
     <input
       matInput
       type="number"
       class="edit-input-measure"
-      [(ngModel)]="bottom"
+      [(ngModel)]="measure.bottom"
     />
   </div>
 
@@ -40,5 +40,5 @@
     }
   </div>
 
-  <span class="measure-number">{{ measureNumber }}</span>
+  <span class="measure-number">{{ measure.number }}</span>
 </div>

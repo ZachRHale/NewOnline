@@ -9,11 +9,12 @@
   border-radius: 4px;
   overflow: hidden;
   display: flex;
+  flex-direction: row;
   gap: 5px;
   padding: 10px;
   align-items: start;
-  flex-direction: row;
-  flex-wrap: wrap;
+  overflow-x: auto;
+  max-width: 100%; /* or set a specific pixel value */
 }
 
 .measure {
@@ -23,6 +24,8 @@
   justify-content: space-between;
   cursor: move;
   background: white;
+  min-width: 90px; /* Adjust as needed */
+  flex: 0 0 auto;
 }
 
 .cdk-drag-preview {

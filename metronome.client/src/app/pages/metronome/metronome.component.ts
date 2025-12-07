@@ -1,4 +1,10 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MeasureService } from '../../services/measure.service';
 import { Measure } from '../../models/measures';
@@ -34,6 +40,8 @@ import {
 export class MetronomeComponent implements OnInit {
   @ViewChildren(MeasureComponent)
   measureComponents!: QueryList<MeasureComponent>;
+  @ViewChildren('measureEl', { read: ElementRef })
+  measureElements!: QueryList<ElementRef>;
   public measures: Measure[] = [];
   public score: Score | null = null;
   public tempo: number = 100;
@@ -91,7 +99,19 @@ export class MetronomeComponent implements OnInit {
   playNextMeasure() {
     const measures = this.measureComponents.toArray();
     if (this.currentMeasureIndex < measures.length) {
+      this.scrollToMeasure(this.currentMeasureIndex);
       measures[this.currentMeasureIndex].play();
+    }
+  }
+
+  private scrollToMeasure(index: number) {
+    const el = this.measureElements.toArray()[index]?.nativeElement;
+    if (el) {
+      el.scrollIntoView({
+        behavior: 'smooth',
+        inline: 'center',
+        block: 'nearest',
+      });
     }
   }
 

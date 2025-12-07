@@ -14,14 +14,13 @@
 >
   @for (item of measures; track item.number) {
     <app-measure
+      #measureEl
       class="measure"
       cdkDragHandle
       cdkDrag
-      [top]="item.top"
-      [bottom]="item.bottom"
+      [measure]="item"
       [tempo]="tempo"
       [showTimeSignature]="showTimeSignature(item)"
-      [measureNumber]="item.number ?? 0"
       (playCompleted)="onPlayCompleted(item.number ?? 1)"
     ></app-measure>
   } @empty {
