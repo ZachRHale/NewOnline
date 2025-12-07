@@ -13,4 +13,10 @@ export class ScoreService {
   getScore(scoreId: number) {
     return this.http.get<Score>(this.url + `/api/score/${scoreId}`);
   }
+
+  getScoresForComposer(composerId: number) {
+    return this.http.get<Score[]>(
+      this.url + `/api/composer/${composerId}/scores`,
+    );
+  }
 }

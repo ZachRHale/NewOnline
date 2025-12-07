@@ -1,11 +1,47 @@
 @if (score) {
   <h2>{{ score?.title }}</h2>
-  <mat-slider min="40" max="240" step="1">
+  <h3>by {{ score?.composer?.firstName }} {{ score?.composer?.lastName }}</h3>
+}
+
+<div>
+  @if (isPlaying) {
+    <button mat-button (click)="stop()">Stop</button>
+  } @else {
+    <button mat-button (click)="play()">Play from beginning</button>
+  }
+</div>
+
+<div>
+  @if (isPlaying) {
+    <button mat-button disabled>Play from measure</button>
+  } @else {
+    <button mat-button (click)="playFromMeasure(startMeasureNumber)">
+      Play
+    </button>
+    from measure
+    <input
+      type="number"
+      min="1"
+      [max]="measures.length"
+      [(ngModel)]="startMeasureNumber"
+    />
+    until measure
+    <input
+      type="number"
+      min="1"
+      [max]="measures.length"
+      [(ngModel)]="stopMeasureNumber"
+    />
+  }
+</div>
+
+<div class="tempo-container">
+  <label for="tempo-slider">Tempo:</label>
+  <mat-slider id="tempo-slider" min="40" max="240" step="1">
     <input matSliderThumb value="100" [(ngModel)]="tempo" />
   </mat-slider>
   <span>{{ tempo }} BPM</span>
-}
-
+</div>
 <div
   cdkDropList
   cdkDropListOrientation="horizontal"

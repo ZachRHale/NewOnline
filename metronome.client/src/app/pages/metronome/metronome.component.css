@@ -1,3 +1,7 @@
+.tempo-container label {
+  font-weight: bold;
+}
+
 .measure-container {
   height: 100%;
 }

@@ -15,8 +15,15 @@ export class ComposerService {
     return this.http.get<Composer[]>(this.url + '/api/composer');
   }
 
+  getComposer(composerId: number): Observable<Composer> {
+    return this.http.get<Composer>(this.url + '/api/composer/' + composerId);
+  }
+
   updateComposer(composer: Composer): Observable<Composer> {
-    return this.http.put<Composer>(this.url + '/api/composer/' + composer.id, composer);
+    return this.http.put<Composer>(
+      this.url + '/api/composer/' + composer.id,
+      composer,
+    );
   }
 
   createComposer(composer: Composer): Observable<Composer> {

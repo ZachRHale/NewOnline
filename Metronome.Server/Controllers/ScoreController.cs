@@ -38,7 +38,7 @@ namespace Metronome.Server.Controllers
         [HttpGet("Score/{id}")]
         public async Task<ActionResult<Score>> GetScore(int id)
         {
-            var score = await _context.Scores.FindAsync(id);
+            var score = await _context.Scores.Include(s => s.Composer).Where(s => s.ID == id).FirstOrDefaultAsync();
 
             if (score == null)
             {

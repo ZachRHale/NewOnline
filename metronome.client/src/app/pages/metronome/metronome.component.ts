@@ -12,7 +12,7 @@ import { MeasureComponent } from '../../components/measure/measure.component';
 import { ScoreService } from '../../services/score.service';
 import { Score } from '../../models/score';
 import { MatSliderModule } from '@angular/material/slider';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import {
   CdkDrag,
@@ -21,6 +21,7 @@ import {
   moveItemInArray,
   CdkDragHandle,
 } from '@angular/cdk/drag-drop';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-metronome',
@@ -35,6 +36,7 @@ import {
     CdkDrag,
     CdkDropList,
     CdkDragHandle,
+    MatButtonModule,
   ],
 })
 export class MetronomeComponent implements OnInit {
@@ -46,6 +48,11 @@ export class MetronomeComponent implements OnInit {
   public score: Score | null = null;
   public tempo: number = 100;
   private currentMeasureIndex: number = 0;
+
+  public startMeasureNumber: number = 1;
+  public currentMeasureNumber: number = 1;
+  public stopMeasureNumber: number = 1;
+  public isPlaying: boolean = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -64,7 +71,6 @@ export class MetronomeComponent implements OnInit {
   getScore(scoreId: number) {
     this.scoreService.getScore(scoreId).subscribe({
       next: (data) => {
-        console.log('Score data:', data);
         this.score = data;
       },
     });
@@ -74,6 +80,7 @@ export class MetronomeComponent implements OnInit {
     this.measureService.getMeasuresForScore(scoreId).subscribe({
       next: (data) => {
         this.measures = data;
+        this.stopMeasureNumber = this.measures.length;
       },
       error: (error) => {
         console.error('Error fetching measures:', error);
@@ -96,11 +103,49 @@ export class MetronomeComponent implements OnInit {
     );
   }
 
+  addMeasure() {
+    const newMeasureNumber = this.measures.length + 1;
+    const newMeasure: Measure = {
+      number: newMeasureNumber,
+      top: 4,
+      bottom: 4,
+      beats: [],
+      tempo: this.tempo,
+    };
+    this.measures.push(newMeasure);
+  }
+
+  play() {
+    this.isPlaying = true;
+    this.currentMeasureIndex = 0;
+    this.currentMeasureNumber = 1;
+    this.playNextMeasure();
+  }
+
+  playFromMeasure(measureNumber: number) {
+    this.isPlaying = true;
+    this.currentMeasureIndex = measureNumber - 1;
+    this.playNextMeasure();
+  }
+
+  stop() {
+    const measures = this.measureComponents.toArray();
+    measures[this.currentMeasureIndex].stop();
+    this.isPlaying = false;
+  }
+
   playNextMeasure() {
+    this.currentMeasureNumber = this.currentMeasureIndex + 1;
+    if (this.currentMeasureNumber > this.stopMeasureNumber) {
+      this.isPlaying = false;
+      return;
+    }
     const measures = this.measureComponents.toArray();
     if (this.currentMeasureIndex < measures.length) {
       this.scrollToMeasure(this.currentMeasureIndex);
       measures[this.currentMeasureIndex].play();
+    } else {
+      this.isPlaying = false;
     }
   }
 
@@ -116,7 +161,9 @@ export class MetronomeComponent implements OnInit {
   }
 
   onPlayCompleted(measureNumber: number) {
-    this.currentMeasureIndex = measureNumber;
-    this.playNextMeasure();
+    if (this.isPlaying) {
+      this.currentMeasureIndex = measureNumber;
+      this.playNextMeasure();
+    }
   }
 }

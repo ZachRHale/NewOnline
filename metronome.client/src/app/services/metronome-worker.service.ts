@@ -5,8 +5,10 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class MetronomeWorkerService {
-  
-  public timerWorker: Worker = new Worker(new URL('../workers/metronomeworker', import.meta.url), { type: 'module' });
+  public timerWorker: Worker = new Worker(
+    new URL('../workers/metronomeworker', import.meta.url),
+    { type: 'module' },
+  );
   // public downBeat = new Audio('../sounds/downClave.wav');
   // public otherBeat = new Audio('../sounds/regularClave1.wav');
   public downBeat: AudioBuffer | null = null;
@@ -16,20 +18,33 @@ export class MetronomeWorkerService {
   async loadSounds() {
     const downBeatResponse = await fetch('../sounds/downClave.wav');
     const downBeatArrayBuffer = await downBeatResponse.arrayBuffer();
-    this.downBeat = await this.audioContext.decodeAudioData(downBeatArrayBuffer); 
+    this.downBeat =
+      await this.audioContext.decodeAudioData(downBeatArrayBuffer);
 
     const otherBeatResponse = await fetch('../sounds/regularClave1.wav');
     const otherBeatArrayBuffer = await otherBeatResponse.arrayBuffer();
-    this.otherBeat = await this.audioContext.decodeAudioData(otherBeatArrayBuffer);
+    this.otherBeat =
+      await this.audioContext.decodeAudioData(otherBeatArrayBuffer);
   }
 
   constructor() {
     this.loadSounds();
   }
 
-  start(tempo: number, beats: number, top: number, bottom: number): Observable<number> {
-    return new Observable<number>(observer => {
-      this.timerWorker.postMessage({ type: 'start', tempo: tempo, beats: beats, bottom: bottom, top: top });
+  start(
+    tempo: number,
+    beats: number,
+    top: number,
+    bottom: number,
+  ): Observable<number> {
+    return new Observable<number>((observer) => {
+      this.timerWorker.postMessage({
+        type: 'start',
+        tempo: tempo,
+        beats: beats,
+        bottom: bottom,
+        top: top,
+      });
       this.timerWorker.onmessage = ({ data }) => {
         if (data.type === 'tick') {
           // Update UI, e.g., show tick
@@ -39,11 +54,13 @@ export class MetronomeWorkerService {
         if (data.type === 'done') {
           // Handle completion
           observer.complete();
-          console.log('Done');
         }
       };
-
     });
+  }
+
+  stop() {
+    this.timerWorker.postMessage('stop');
   }
 
   private playSound(beat: number): AudioBufferSourceNode | null {

@@ -1,2 +1,7 @@
-﻿<h1>Menu Header</h1>
+﻿<div class="menu">
+  <button matButton (click)="navigate('')">Home</button>
+  <button matButton (click)="navigate('composers')">Composers</button>
+  <button matButton (click)="navigate('scores')">Scores / Metronomes</button>
+</div>
+
 <router-outlet></router-outlet>

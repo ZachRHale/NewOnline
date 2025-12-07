@@ -83,6 +83,6 @@ export class MeasureComponent implements OnInit {
   }
 
   stop() {
-    // worker.postMessage('stop');
+    this.metronomeWorkerService.stop();
   }
 }
