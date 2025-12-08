@@ -1,13 +1,13 @@
 name: Deploy Angular Frontend to Digital Ocean Droplet
 
-on:
+on: 
   push:
     branches:
       - 2025/redo
     paths:
       - Metronome.Client/**
-  workflow_dispatch: on
-
+  workflow_dispatch:
+  
 jobs:
   build-and-deploy-frontend:
     runs-on: ubuntu-latest
