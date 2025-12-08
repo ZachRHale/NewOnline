@@ -5,7 +5,7 @@ on:
     branches:
       - 2025/redo
     paths:
-      - Metronome.Client/**
+      - metronome.client/**
   workflow_dispatch:
   
 jobs:
@@ -23,12 +23,12 @@ jobs:
 
     - name: Install dependencies
       run: |
-        cd Metronome.Client
+        cd metronome.client
         npm ci
 
     - name: Build Angular app
       run: |
-        cd Metronome.Client
+        cd metronome.client
         npm run build -- --configuration=production
 
     - name: Copy files to Droplet via SSH
@@ -37,7 +37,7 @@ jobs:
         host: ${{ secrets.DO_HOST }}
         username: ${{ secrets.DO_USER }}
         key: ${{ secrets.DO_SSH_KEY }}
-        source: Metronome.Client/dist/Metronome.Client/
+        source: metronome.client/dist/metronome.client/
         target: ~/metronome-client/
 
     - name: Restart Frontend (optional)
