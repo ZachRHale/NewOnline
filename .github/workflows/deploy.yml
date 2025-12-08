@@ -1,4 +1,4 @@
-name: Deploy to Digital Ocean Droplet
+name: Deploy .NET API to Digital Ocean Droplet
 
 on:
   push:
