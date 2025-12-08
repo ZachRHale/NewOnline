@@ -1,0 +1,14 @@
+<mat-dialog-content>
+  <mat-form-field>
+    <mat-label>First Name</mat-label>
+    <input matInput [(ngModel)]="composerCopy.firstName" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Last Name</mat-label>
+    <input matInput [(ngModel)]="composerCopy.lastName" />
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button matButton (click)="cancel()">Cancel</button>
+  <button matButton (click)="ok()" cdkFocusInitial>Ok</button>
+</mat-dialog-actions>

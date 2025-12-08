@@ -1,0 +1,52 @@
+name: Deploy Angular Frontend to Digital Ocean Droplet
+
+on: 
+  push:
+    branches:
+      - 2025/redo
+    paths:
+      - metronome.client/**
+  workflow_dispatch:
+  
+jobs:
+  build-and-deploy-frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+
+    - name: Install dependencies
+      run: |
+        cd metronome.client
+        npm ci
+
+    - name: Build Angular app
+      run: |
+        cd metronome.client
+        npm run build -- --configuration=production
+
+    - name: Copy files to Droplet via SSH
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.DO_HOST }}
+        username: ${{ secrets.DO_USER }}
+        key: ${{ secrets.DO_SSH_KEY }}
+        source: metronome.client/dist/metronome.client/
+        target: /var/www/metronome-client/
+
+    - name: Restart Frontend (optional)
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        host: ${{ secrets.DO_HOST }}
+        username: ${{ secrets.DO_USER }}
+        key: ${{ secrets.DO_SSH_KEY }}
+        script: |
+          # If you use a process manager or need to restart nginx, add commands here
+          # Example for nginx:
+          sudo systemctl reload nginx

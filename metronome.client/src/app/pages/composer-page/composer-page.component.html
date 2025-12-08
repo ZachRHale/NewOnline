@@ -1,0 +1,23 @@
+<h1>Composers</h1>
+
+@if (isLoading) {
+  <mat-spinner></mat-spinner>
+} @else {
+  <button mat-flat-button color="primary" (click)="openCreateComposerDialog()">
+    Create Composer
+  </button>
+  <table mat-table [dataSource]="composers" class="mat-elevation-z8">
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <td mat-cell *matCellDef="let composer">
+        <button mat-button (click)="viewComposer(composer.id)">
+          {{ composer.firstName }} {{ composer.lastName }}
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="['name']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['name']"></tr>
+  </table>
+}

@@ -1,0 +1,31 @@
+<div class="welcome-container">
+  <h1>Welcome to Metronome!</h1>
+  <p class="welcome-desc">
+    Your place to create, manage, and play musical scores and metronomes. Start
+    by searching for a composer, score, or metronome below.
+  </p>
+  <mat-form-field appearance="outline" class="search-box">
+    <mat-label>Search</mat-label>
+    <input matInput placeholder="Type to search..." [(ngModel)]="searchTerm" />
+    <button mat-icon-button matSuffix aria-label="Search" (click)="search()">
+      <mat-icon>search</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+
+@if (searchResults.length > 0) {
+  <div class="results-list">
+    <mat-list>
+      @for (result of searchResults; track result.id) {
+        <mat-list-item>
+          <button mat-button (click)="navigateToScore(result.id ?? 0)">
+            {{ result.title }}</button
+          >by {{ result.composer?.firstName }}
+          {{ result.composer?.lastName }}
+        </mat-list-item>
+      }
+    </mat-list>
+  </div>
+} @else {
+  <p class="no-results">No results found. Try a different search term.</p>
+}

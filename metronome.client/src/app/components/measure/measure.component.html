@@ -1,0 +1,44 @@
+<div [ngClass]="{ playing: isPlaying, measure: true }">
+  @if (showTimeSignature) {
+    <div *ngIf="!editing" class="time-signature">
+      <div class="input-measure">{{ measure.top }}</div>
+      <div class="divider"></div>
+      <div class="input-measure">{{ measure.bottom }}</div>
+    </div>
+  }
+  <div *ngIf="editing" class="time-signature">
+    <input
+      matInput
+      type="number"
+      class="edit-input-measure"
+      [(ngModel)]="measure.top"
+    />
+    <div class="divider"></div>
+    <input
+      matInput
+      type="number"
+      class="edit-input-measure"
+      [(ngModel)]="measure.bottom"
+    />
+  </div>
+
+  <button mat-icon-button (click)="edit()">
+    @if (!editing) {
+      <mat-icon>edit</mat-icon>
+    } @else {
+      <mat-icon>save</mat-icon>
+    }
+  </button>
+  <button mat-icon-button (click)="onPlayClick()">
+    <mat-icon>play_arrow</mat-icon>
+  </button>
+  <div class="beats">
+    @for (beat of beats; track beat) {
+      <div class="beat" [ngClass]="{ active: beat.active }"></div>
+    } @empty {
+      <div>No beats</div>
+    }
+  </div>
+
+  <span class="measure-number">{{ measure.number }}</span>
+</div>

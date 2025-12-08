@@ -1,0 +1,50 @@
+name: Deploy .NET API to Digital Ocean Droplet
+
+on:
+  push:
+    branches:
+      - 2025/redo
+    paths:
+      - Metronome.Server/**
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Update connection string in appsettings.json
+      run: |
+        sed -i 's|"DefaultConnection":.*|"DefaultConnection": "${{ secrets.PROD_CONNECTION_STRING }}",|' Metronome.Server/appsettings.json
+
+    - name: Publish .NET app
+      run: dotnet publish Metronome.Server/Metronome.Server.csproj -c Release -o publish
+
+    - name: Copy files to Droplet via SSH
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.DO_HOST }}
+        username: ${{ secrets.DO_USER }}
+        key: ${{ secrets.DO_SSH_KEY }}
+        source: publish/
+        target: ~/metronome-api/
+
+    - name: Restart API on Droplet
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        host: ${{ secrets.DO_HOST }}
+        username: ${{ secrets.DO_USER }}
+        key: ${{ secrets.DO_SSH_KEY }}
+        script: |
+          cd ~/metronome-api/publish
+          # Stop any running instance (customize as needed)
+          pkill dotnet || true
+          # Start the API (customize as needed)
+          nohup dotnet Metronome.Server.dll --urls "http://0.0.0.0:5000" > log.txt 2>&1 &
