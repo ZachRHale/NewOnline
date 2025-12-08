@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - 2025/redo
+    paths:
+      - Metronome.Server/**
 
 jobs:
   build-and-deploy:
