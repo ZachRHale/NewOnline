@@ -2,12 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
-import { AuthService } from '@auth0/auth0-angular';
+import { AuthService, LogoutOptions } from '@auth0/auth0-angular';
+import { MatCardModule } from '@angular/material/card';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  imports: [RouterModule, MatMenuModule, MatButtonModule, RouterModule],
+  imports: [
+    RouterModule,
+    MatMenuModule,
+    MatButtonModule,
+    RouterModule,
+    MatCardModule,
+  ],
 })
 export class AppComponent implements OnInit {
   public isLoading: boolean = true;
@@ -45,5 +52,12 @@ export class AppComponent implements OnInit {
 
   login() {
     this.auth.loginWithRedirect();
+  }
+
+  logout() {
+    const options: LogoutOptions = {
+      logoutParams: { returnTo: window.location.origin },
+    };
+    this.auth.logout(options).subscribe();
   }
 }
