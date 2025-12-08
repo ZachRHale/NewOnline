@@ -38,7 +38,7 @@ jobs:
         username: ${{ secrets.DO_USER }}
         key: ${{ secrets.DO_SSH_KEY }}
         source: metronome.client/dist/metronome.client/
-        target: ~/metronome-client/
+        target: /var/www/metronome-client/
 
     - name: Restart Frontend (optional)
       uses: appleboy/ssh-action@v0.1.10
