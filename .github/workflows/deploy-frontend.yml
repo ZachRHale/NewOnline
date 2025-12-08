@@ -6,7 +6,7 @@ on:
       - 2025/redo
     paths:
       - Metronome.Client/**
-
+  workflow_dispatch: on
 
 jobs:
   build-and-deploy-frontend:
